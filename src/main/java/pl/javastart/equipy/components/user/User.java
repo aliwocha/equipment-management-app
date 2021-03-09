@@ -1,6 +1,7 @@
 package pl.javastart.equipy.components.user;
 
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
@@ -14,6 +15,7 @@ public class User {
     private String firstName;
     @NotEmpty
     private String lastName;
+    @Digits(integer = 11, fraction = 0)
     @Size(min = 11)
     @Column(unique = true, length = 11)
     private String pesel;
