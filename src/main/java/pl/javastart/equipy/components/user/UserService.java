@@ -30,4 +30,11 @@ class UserService {
                 .collect(Collectors.toList());
     }
 
+    List<UserDto> findAllByLastName(String lastName) {
+        return userRepository.findAllByLastNameContainingIgnoreCase(lastName)
+                .stream()
+                .map(UserMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }
