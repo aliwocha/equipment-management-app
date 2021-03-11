@@ -3,10 +3,8 @@ package pl.javastart.equipy.components.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -20,8 +18,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<UserDto> getOne(@PathVariable Long id) {
+    public UserDto getOne(@PathVariable Long id) {
         return userService.findById(id);
+    }
+
+    @PutMapping("/{id}")
+    public UserDto update(@RequestBody UserDto user, @PathVariable Long id) {
+        return userService.update(user, id);
     }
 
     @GetMapping("")
@@ -35,10 +38,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
-    public UserDto add(@RequestBody UserDto user) {
-        if(user.getId() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Zapisywany obiekt nie może mieć ustawionego id");
-        }
+    public UserDto save(@RequestBody UserDto user) {
         return userService.save(user);
     }
 }
