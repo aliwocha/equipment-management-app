@@ -1,9 +1,8 @@
 package pl.javastart.equipy.components.asset;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,7 +18,17 @@ public class AssetController {
     }
 
     @GetMapping("")
-    public List<AssetDto> getAll() {
-        return assetService.findAll();
+    public List<AssetDto> getAll(@RequestParam(required = false) String text) {
+        if(text != null) {
+            return assetService.findAllByNameOrSerialNumber(text);
+        } else {
+            return assetService.findAll();
+        }
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("")
+    public AssetDto save(@RequestBody AssetDto asset) {
+        return assetService.save(asset);
     }
 }

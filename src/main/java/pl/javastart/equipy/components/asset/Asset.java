@@ -18,7 +18,6 @@ public class Asset {
     @NotEmpty
     @Column(unique = true)
     private String serialNumber;
-    @NotEmpty
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     private Category category;

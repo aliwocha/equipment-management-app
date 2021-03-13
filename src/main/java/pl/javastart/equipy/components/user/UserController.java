@@ -22,11 +22,6 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PutMapping("/{id}")
-    public UserDto update(@RequestBody UserDto user, @PathVariable Long id) {
-        return userService.update(user, id);
-    }
-
     @GetMapping("")
     public List<UserDto> getAll(@RequestParam(required = false) String lastName) {
         if(lastName != null) {
@@ -40,5 +35,10 @@ public class UserController {
     @PostMapping("")
     public UserDto save(@RequestBody UserDto user) {
         return userService.save(user);
+    }
+
+    @PutMapping("/{id}")
+    public UserDto update(@RequestBody UserDto user, @PathVariable Long id) {
+        return userService.update(user, id);
     }
 }

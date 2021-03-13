@@ -41,8 +41,9 @@ class UserService {
     }
 
     UserDto save(UserDto user) {
-        if(user.getId() != null)
+        if(user.getId() != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Zapisywany obiekt nie może mieć ustawionego id");
+        }
 
         Optional<User> userByPesel = userRepository.findByPesel(user.getPesel());
         if(userByPesel.isPresent()) {
