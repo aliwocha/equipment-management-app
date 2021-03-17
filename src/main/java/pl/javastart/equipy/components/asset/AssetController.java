@@ -17,6 +17,11 @@ public class AssetController {
         this.assetService = assetService;
     }
 
+    @GetMapping("/{id}")
+    public AssetDto getOne(@PathVariable Long id) {
+        return assetService.findById(id);
+    }
+
     @GetMapping("")
     public List<AssetDto> getAll(@RequestParam(required = false) String text) {
         if(text != null) {
@@ -30,5 +35,10 @@ public class AssetController {
     @PostMapping("")
     public AssetDto save(@RequestBody AssetDto asset) {
         return assetService.save(asset);
+    }
+
+    @PutMapping("/{id}")
+    public AssetDto update(@RequestBody AssetDto asset, @PathVariable Long id) {
+        return assetService.update(asset, id);
     }
 }

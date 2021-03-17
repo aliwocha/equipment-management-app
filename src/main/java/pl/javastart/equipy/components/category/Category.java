@@ -61,7 +61,6 @@ public class Category {
                 "id=" + id +
                 ", name=" + name +
                 ", description=" + description +
-                ", assets=" + assets +
                 ']';
     }
 }

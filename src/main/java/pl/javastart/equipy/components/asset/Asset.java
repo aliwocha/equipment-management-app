@@ -1,9 +1,12 @@
 package pl.javastart.equipy.components.asset;
 
+import pl.javastart.equipy.components.assignment.Assignment;
 import pl.javastart.equipy.components.category.Category;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Asset {
@@ -21,6 +24,8 @@ public class Asset {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id")
     private Category category;
+    @OneToMany(mappedBy = "asset")
+    private List<Assignment> assignments = new ArrayList<>();
 
     public Asset() {}
 
@@ -64,6 +69,14 @@ public class Asset {
         this.category = category;
     }
 
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
+    }
+
     @Override
     public String toString() {
         return "Asset [" +
@@ -71,7 +84,7 @@ public class Asset {
                 ", name=" + name +
                 ", description=" + description +
                 ", serialNumber=" + serialNumber +
-                ", category=" + category +
+                ", category=" + category.getName() +
                 ']';
     }
 }

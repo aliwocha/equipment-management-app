@@ -21,6 +21,12 @@ class AssetService {
         this.assetMapper = assetMapper;
     }
 
+    AssetDto findById(Long id) {
+        return assetRepository.findById(id)
+                .map(assetMapper::toDto)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sprzęt o wskazanym id nie istnieje"));
+    }
+
     List<AssetDto> findAll() {
         return assetRepository.findAll()
                 .stream()
@@ -44,6 +50,24 @@ class AssetService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "Wyposażenie z takim numerem seryjnym już istnieje");
         }
 
+        return mapAndSaveAsset(asset);
+    }
+
+    AssetDto update(AssetDto asset, Long id) {
+        if(!id.equals(asset.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id aktualizowanego obiektu jest różne od id w ścieżce URL");
+        }
+
+        Optional<Asset> assetBySerialNumber = assetRepository.findBySerialNumber(asset.getSerialNumber());
+        assetBySerialNumber.ifPresent(a -> {
+            if(!a.getId().equals(asset.getId()))
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Wyposażenie z takim numerem seryjnym już istnieje");
+        });
+
+        return mapAndSaveAsset(asset);
+    }
+
+    private AssetDto mapAndSaveAsset(AssetDto asset) {
         Asset assetEntity = assetMapper.toEntity(asset);
         Asset savedAsset = assetRepository.save(assetEntity);
         return assetMapper.toDto(savedAsset);

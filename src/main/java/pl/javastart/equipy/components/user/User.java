@@ -1,9 +1,13 @@
 package pl.javastart.equipy.components.user;
 
+import pl.javastart.equipy.components.assignment.Assignment;
+
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User {
@@ -19,6 +23,8 @@ public class User {
     @Size(min = 11)
     @Column(unique = true, length = 11)
     private String pesel;
+    @OneToMany(mappedBy = "user")
+    private List<Assignment> assignments = new ArrayList<>();
 
     public User() {}
 
@@ -52,6 +58,14 @@ public class User {
 
     public void setPesel(String pesel) {
         this.pesel = pesel;
+    }
+
+    public List<Assignment> getAssignments() {
+        return assignments;
+    }
+
+    public void setAssignments(List<Assignment> assignments) {
+        this.assignments = assignments;
     }
 
     @Override
