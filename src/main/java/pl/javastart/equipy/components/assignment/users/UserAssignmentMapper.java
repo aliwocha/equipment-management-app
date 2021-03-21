@@ -1,24 +1,28 @@
-package pl.javastart.equipy.components.assignment;
+package pl.javastart.equipy.components.assignment.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.javastart.equipy.components.asset.Asset;
 import pl.javastart.equipy.components.asset.AssetRepository;
+import pl.javastart.equipy.components.assignment.common.Assignment;
+import pl.javastart.equipy.components.assignment.common.AssignmentDto;
+import pl.javastart.equipy.components.assignment.common.AssignmentMapper;
 
 import java.util.Optional;
 
 @Service
-class AssignmentMapper {
+public class UserAssignmentMapper implements AssignmentMapper<UserAssignmentDto> {
 
     private AssetRepository assetRepository;
 
     @Autowired
-    AssignmentMapper(AssetRepository assetRepository) {
+    public UserAssignmentMapper(AssetRepository assetRepository) {
         this.assetRepository = assetRepository;
     }
 
-    AssignmentDto toDto(Assignment assignment) {
-        AssignmentDto dto = new AssignmentDto();
+    @Override
+    public AssignmentDto toDto(Assignment assignment) {
+        UserAssignmentDto dto = new UserAssignmentDto();
         dto.setId(assignment.getId());
         dto.setStart(assignment.getStart());
         dto.setEnd(assignment.getEnd());
@@ -30,7 +34,8 @@ class AssignmentMapper {
         return dto;
     }
 
-    Assignment toEntity(AssignmentDto assignment) {
+    @Override
+    public Assignment toEntity(UserAssignmentDto assignment) {
         Assignment entity = new Assignment();
         entity.setId(assignment.getId());
         entity.setStart(assignment.getStart());

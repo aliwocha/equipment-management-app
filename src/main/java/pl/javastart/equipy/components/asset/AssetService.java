@@ -24,7 +24,7 @@ class AssetService {
     AssetDto findById(Long id) {
         return assetRepository.findById(id)
                 .map(assetMapper::toDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sprzęt o wskazanym id nie istnieje"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sprzęt o podanym id nie istnieje"));
     }
 
     List<AssetDto> findAll() {

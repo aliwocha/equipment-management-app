@@ -1,15 +1,12 @@
-package pl.javastart.equipy.components.assignment;
+package pl.javastart.equipy.components.assignment.common;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class AssignmentController {
 
     private AssignmentService assignmentService;
@@ -19,8 +16,13 @@ public class AssignmentController {
         this.assignmentService = assignmentService;
     }
 
-    @GetMapping("/{userId}/assignments")
+    @GetMapping("/users/{userId}/assignments")
     public List<AssignmentDto> getAllUserAssignments(@PathVariable Long userId) {
         return assignmentService.findAllByUserId(userId);
+    }
+
+    @GetMapping("/assets/{assetId}/assignments")
+    public List<AssignmentDto> getAllAssetAssignments(@PathVariable Long assetId) {
+        return assignmentService.findAllByAssetId(assetId);
     }
 }
