@@ -1,6 +1,6 @@
 package pl.javastart.equipy.components.asset;
 
-import pl.javastart.equipy.components.assignment.common.Assignment;
+import pl.javastart.equipy.components.assignment.Assignment;
 import pl.javastart.equipy.components.category.Category;
 
 import javax.persistence.*;

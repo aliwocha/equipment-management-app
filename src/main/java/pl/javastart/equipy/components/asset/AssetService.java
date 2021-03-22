@@ -14,17 +14,20 @@ class AssetService {
 
     private AssetRepository assetRepository;
     private AssetMapper assetMapper;
+    private AssetAssignmentMapper assetAssignmentMapper;
 
     @Autowired
-    AssetService(AssetRepository assetRepository, AssetMapper assetMapper) {
+    public AssetService(AssetRepository assetRepository, AssetMapper assetMapper,
+                        AssetAssignmentMapper assetAssignmentMapper) {
         this.assetRepository = assetRepository;
         this.assetMapper = assetMapper;
+        this.assetAssignmentMapper = assetAssignmentMapper;
     }
 
     AssetDto findById(Long id) {
         return assetRepository.findById(id)
                 .map(assetMapper::toDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Sprzęt o podanym id nie istnieje"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wyposażenie o podanym id nie istnieje"));
     }
 
     List<AssetDto> findAll() {
@@ -38,6 +41,15 @@ class AssetService {
         return assetRepository.findAllByNameOrSerialNumber(text)
                 .stream()
                 .map(assetMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    List<AssetAssignmentDto> getAssetAssignments(Long assetId) {
+        return assetRepository.findById(assetId)
+                .map(Asset::getAssignments)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wyposażenie o podanym id nie istnieje"))
+                .stream()
+                .map(assetAssignmentMapper::toDto)
                 .collect(Collectors.toList());
     }
 

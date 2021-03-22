@@ -1,14 +1,12 @@
-package pl.javastart.equipy.components.assignment.common;
+package pl.javastart.equipy.components.assignment;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AssignmentRepository extends JpaRepository<Assignment, Long> {
 
-    List<Assignment> findAllByUserId(Long userId);
-
-    List<Assignment> findAllByAssetId(Long assetId);
+    Optional<Assignment> findByAsset_IdAndEndIsNull(Long assetId);
 }

@@ -1,12 +1,39 @@
-package pl.javastart.equipy.components.assignment.users;
+package pl.javastart.equipy.components.user;
 
-import pl.javastart.equipy.components.assignment.common.AssignmentDto;
+import java.time.LocalDateTime;
 
-public class UserAssignmentDto extends AssignmentDto {
+class UserAssignmentDto {
 
+    private Long id;
+    private LocalDateTime start;
+    private LocalDateTime end;
     private Long assetId;
     private String assetName;
     private String assetSerialNumber;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public LocalDateTime getStart() {
+        return start;
+    }
+
+    public void setStart(LocalDateTime start) {
+        this.start = start;
+    }
+
+    public LocalDateTime getEnd() {
+        return end;
+    }
+
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
+    }
 
     public Long getAssetId() {
         return assetId;

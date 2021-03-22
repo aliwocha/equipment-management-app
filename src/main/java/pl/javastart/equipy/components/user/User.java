@@ -1,6 +1,6 @@
 package pl.javastart.equipy.components.user;
 
-import pl.javastart.equipy.components.assignment.common.Assignment;
+import pl.javastart.equipy.components.assignment.Assignment;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;

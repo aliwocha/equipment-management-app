@@ -14,10 +14,12 @@ import java.util.stream.Collectors;
 class UserService {
 
     private UserRepository userRepository;
+    private UserAssignmentMapper userAssignmentMapper;
 
     @Autowired
-    UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, UserAssignmentMapper userAssignmentMapper) {
         this.userRepository = userRepository;
+        this.userAssignmentMapper = userAssignmentMapper;
     }
 
     UserDto findById(Long id) {
@@ -37,6 +39,15 @@ class UserService {
         return userRepository.findAllByLastNameContainingIgnoreCase(lastName)
                 .stream()
                 .map(UserMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
+    List<UserAssignmentDto> getUserAssignments(Long userId) {
+        return userRepository.findById(userId)
+                .map(User::getAssignments)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Użytkownik o podanym id nie istnieje"))
+                .stream()
+                .map(userAssignmentMapper::toDto)
                 .collect(Collectors.toList());
     }
 

@@ -31,6 +31,11 @@ public class AssetController {
         }
     }
 
+    @GetMapping("/{assetId}/assignments")
+    public List<AssetAssignmentDto> getAssetAssignments(@PathVariable Long assetId) {
+        return assetService.getAssetAssignments(assetId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public AssetDto save(@RequestBody AssetDto asset) {

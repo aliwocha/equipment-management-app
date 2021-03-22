@@ -1,4 +1,4 @@
-package pl.javastart.equipy.components.assignment.common;
+package pl.javastart.equipy.components.assignment;
 
 import pl.javastart.equipy.components.asset.Asset;
 import pl.javastart.equipy.components.user.User;

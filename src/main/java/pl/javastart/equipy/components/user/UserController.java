@@ -31,6 +31,11 @@ public class UserController {
         }
     }
 
+    @GetMapping("/{userId}/assignments")
+    public List<UserAssignmentDto> getUserAssignments(@PathVariable Long userId) {
+        return userService.getUserAssignments(userId);
+    }
+
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
     public UserDto save(@RequestBody UserDto user) {
