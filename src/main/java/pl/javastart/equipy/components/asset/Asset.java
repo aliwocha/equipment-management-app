@@ -21,7 +21,7 @@ public class Asset {
     @NotEmpty
     @Column(unique = true)
     private String serialNumber;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
     @OneToMany(mappedBy = "asset")

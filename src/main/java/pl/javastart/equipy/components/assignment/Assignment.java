@@ -14,10 +14,10 @@ public class Assignment {
     private Long id;
     private LocalDateTime start;
     private LocalDateTime end;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "asset_id")
     private Asset asset;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 

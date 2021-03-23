@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import pl.javastart.equipy.components.user.exceptions.DuplicatePeselException;
+import pl.javastart.equipy.components.user.exceptions.UserNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +27,7 @@ class UserService {
     UserDto findById(Long id) {
         return userRepository.findById(id)
                 .map(UserMapper::toDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Użytkownik o wskazanym id nie istnieje"));
+                .orElseThrow(UserNotFoundException::new);
     }
 
     List<UserDto> findAll() {
@@ -45,7 +47,7 @@ class UserService {
     List<UserAssignmentDto> getUserAssignments(Long userId) {
         return userRepository.findById(userId)
                 .map(User::getAssignments)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Użytkownik o podanym id nie istnieje"))
+                .orElseThrow(UserNotFoundException::new)
                 .stream()
                 .map(userAssignmentMapper::toDto)
                 .collect(Collectors.toList());
@@ -58,7 +60,7 @@ class UserService {
 
         Optional<User> userByPesel = userRepository.findByPesel(user.getPesel());
         if(userByPesel.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Użytkownik z tym numerem pesel już istnieje");
+            throw new DuplicatePeselException();
         }
 
         return mapAndSaveUser(user);
@@ -72,7 +74,7 @@ class UserService {
         Optional<User> userByPesel = userRepository.findByPesel(user.getPesel());
         userByPesel.ifPresent(u -> {
             if(!u.getId().equals(user.getId()))
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Użytkownik z tym numerem pesel już istnieje");
+                throw new DuplicatePeselException();
         });
 
         return mapAndSaveUser(user);

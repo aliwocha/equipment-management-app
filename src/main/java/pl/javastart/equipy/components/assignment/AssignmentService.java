@@ -5,6 +5,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import pl.javastart.equipy.components.asset.AssetRepository;
+import pl.javastart.equipy.components.assignment.exceptions.AssignmentNotFoundException;
+import pl.javastart.equipy.components.assignment.exceptions.InvalidAssignmentException;
 import pl.javastart.equipy.components.user.UserRepository;
 
 import java.time.LocalDateTime;
@@ -33,14 +35,13 @@ class AssignmentService {
         }
 
         userRepository.findById(assignment.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Użytkownik o podanym id nie istnieje"));
-
+                .orElseThrow(() -> new InvalidAssignmentException("Użytkownik o podanym id nie istnieje"));
         assetRepository.findById(assignment.getAssetId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wyposażenie o podanym id nie istnieje"));
+                .orElseThrow(() -> new InvalidAssignmentException("Wyposażenie o podanym id nie istnieje"));
 
         Optional<Assignment> assignmentByAssetId = assignmentRepository.findByAsset_IdAndEndIsNull(assignment.getAssetId());
         if(assignmentByAssetId.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wyposażenie o podanym id jest aktualnie wypożyczone");
+            throw new InvalidAssignmentException("Wyposażenie o podanym id jest aktualnie wypożyczone");
         }
 
         Assignment assignmentEntity = assignmentMapper.toEntity(assignment);
@@ -50,9 +51,9 @@ class AssignmentService {
 
     LocalDateTime finishAssignment(Long id) {
         Optional<Assignment> assignment = assignmentRepository.findById(id);
-        Assignment updatedAssignment = assignment.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Brak przypisania o podanym id"));
+        Assignment updatedAssignment = assignment.orElseThrow(AssignmentNotFoundException::new);
         if(updatedAssignment.getEnd() != null) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Wyposażenie o podanym id zostało już zwrócone");
+            throw new InvalidAssignmentException("Wyposażenie o podanym id zostało już zwrócone");
         } else {
             updatedAssignment.setEnd(LocalDateTime.now().withNano(0));
             assignmentMapper.toDto(assignmentRepository.save(updatedAssignment));

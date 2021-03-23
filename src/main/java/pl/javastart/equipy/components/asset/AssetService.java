@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import pl.javastart.equipy.components.asset.exceptions.AssetNotFoundException;
+import pl.javastart.equipy.components.asset.exceptions.DuplicateSerialNumberException;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +29,7 @@ class AssetService {
     AssetDto findById(Long id) {
         return assetRepository.findById(id)
                 .map(assetMapper::toDto)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wyposażenie o podanym id nie istnieje"));
+                .orElseThrow(AssetNotFoundException::new);
     }
 
     List<AssetDto> findAll() {
@@ -47,7 +49,7 @@ class AssetService {
     List<AssetAssignmentDto> getAssetAssignments(Long assetId) {
         return assetRepository.findById(assetId)
                 .map(Asset::getAssignments)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Wyposażenie o podanym id nie istnieje"))
+                .orElseThrow(AssetNotFoundException::new)
                 .stream()
                 .map(assetAssignmentMapper::toDto)
                 .collect(Collectors.toList());
@@ -59,7 +61,7 @@ class AssetService {
 
         Optional<Asset> assetBySerialNumber = assetRepository.findBySerialNumber(asset.getSerialNumber());
         if(assetBySerialNumber.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Wyposażenie z takim numerem seryjnym już istnieje");
+            throw new DuplicateSerialNumberException();
         }
 
         return mapAndSaveAsset(asset);
@@ -73,7 +75,7 @@ class AssetService {
         Optional<Asset> assetBySerialNumber = assetRepository.findBySerialNumber(asset.getSerialNumber());
         assetBySerialNumber.ifPresent(a -> {
             if(!a.getId().equals(asset.getId()))
-                throw new ResponseStatusException(HttpStatus.CONFLICT, "Wyposażenie z takim numerem seryjnym już istnieje");
+                throw new DuplicateSerialNumberException();
         });
 
         return mapAndSaveAsset(asset);
