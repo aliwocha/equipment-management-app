@@ -1,6 +1,6 @@
 # **Equipy App**
 
-The app is used for managing equipment in the company. The frontend of the app was prepared originally by the creator of the course. He used AngularJS and RESTful architecture, and provided all endpoints necessary to implement full functionality. My task was to develop the backend side of the app in accordance with the api specification. It is assumed that the only user of the app is the admin, so there is no need of security configuration.
+The app is used for managing equipment in the company. The frontend of the app was prepared originally by the creator of the course at javastart.pl. He used AngularJS and RESTful architecture, and provided all endpoints necessary to implement full functionality. My task was to develop the backend side of the app in accordance with the api specification. It is assumed that the only user of the app is the admin, so there is no need of security configuration.
 
 The main functionalities implemented:
 * adding and editing users
