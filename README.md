@@ -12,16 +12,16 @@ The main functionalities implemented:
 ## **Technology used:**
 * Java 11
 * SpringBoot
+* Spring Data JPA
 * Hibernate
 * H2
-* REST API
 
 ## **How to run:**
 1. Clone the repository onto your own computer.
 
 2. Go to the main folder of the project and run this command:
 
-* for the Unix system:
+* for the Unix system (or Git Bash):
 ```
 ./mvnw spring-boot:run
 ```
